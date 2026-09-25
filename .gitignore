@@ -1,0 +1,17 @@
+# Dependencias y temporales
+curso/herramientas/node_modules/
+**/stills/
+
+# Videos: solo se publican las copias livianas para web (*-web.mp4).
+# Los maestros y las pruebas (v1, v2, con voz) quedan en OneDrive.
+*.mp4
+!*-web.mp4
+
+# Insumos internos que se regeneran (capturas para el pptx, textos para la voz)
+curso/*/img/
+curso/*/narracion.json
+
+# Documentos internos de trabajo (quedan en OneDrive, no se publican)
+ESTADO.md
+curso/PLAN-PUBLICACION.md
+curso/INVESTIGACION-PORTAL.md

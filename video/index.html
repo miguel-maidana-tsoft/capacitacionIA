@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>De lunes a martes · Una historia de desarrollo con IA · TSOFT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#000;color:#F5F6F8;font-family:Inter,system-ui,sans-serif;overflow:hidden}
+  #stage{position:absolute;inset:0 0 64px 0;display:flex;align-items:center;justify-content:center}
+  #film{width:min(100vw,calc((100vh - 64px) * 16 / 9));aspect-ratio:16/9;display:block;background:#07090D}
+  #start{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9vh;cursor:pointer;background:linear-gradient(0deg,rgba(0,0,0,.55),rgba(0,0,0,0) 45%)}
+  #start span{display:flex;align-items:center;gap:14px;background:#E30613;color:#fff;font-weight:700;font-size:20px;padding:18px 30px;border-radius:999px;box-shadow:0 12px 40px rgba(227,6,19,.5)}
+  #controls{position:absolute;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;gap:16px;padding:0 20px;background:#0C0F15;border-top:1px solid rgba(255,255,255,.08)}
+  #controls button{background:none;border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:999px;height:38px;min-width:38px;padding:0 14px;font:600 14px Inter,sans-serif;cursor:pointer}
+  #controls button:hover{border-color:#E30613}
+  #time{font:500 13px "JetBrains Mono",Consolas,monospace;color:#9AA1AD;min-width:110px}
+  #bar{position:relative;flex:1;height:30px;cursor:pointer}
+  #bar .track{position:absolute;left:0;right:0;top:13px;height:4px;border-radius:2px;background:rgba(255,255,255,.12)}
+  #bar .fill{position:absolute;left:0;top:13px;height:4px;border-radius:2px;background:#E30613;width:0}
+  #bar .mark{position:absolute;top:9px;width:2px;height:12px;background:rgba(255,255,255,.35)}
+  #bar .mark span{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:11px;color:#9AA1AD;opacity:0;transition:.2s;background:#0C0F15;padding:2px 6px;border-radius:4px}
+  #bar .mark:hover span{opacity:1}
+  #chapter{font-size:13px;color:#9AA1AD;min-width:170px;text-align:right}
+  body.export #controls,body.export #start{display:none}
+  body.export #stage{inset:0}
+  body.export #film{width:1920px;height:1080px}
+  #actions{position:absolute;left:0;right:0;top:0;height:56px;display:flex;align-items:center;gap:10px;padding:0 20px;background:#0C0F15;border-bottom:1px solid rgba(255,255,255,.08);font:600 14px Inter,system-ui,sans-serif}
+  #actions a{color:#F5F6F8;text-decoration:none;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 14px;white-space:nowrap}
+  #actions a:hover{border-color:#E30613}
+  #actions a.main{background:#E30613;border-color:#E30613}
+  #actions .t{color:#9AA1AD;margin-left:6px}
+  #actions .sp{flex:1}
+  body.con-acciones #stage{top:56px}
+  body.con-acciones #film{width:min(100vw,calc((100vh - 120px) * 16 / 9))}
+  body.export #actions{display:none}
+  body.export.con-acciones #stage{top:0}
+  @media(max-width:720px){#actions .t{display:none}#actions a{padding:7px 10px;font-size:12px}}
+</style>
+</head>
+<body class="con-acciones">
+<nav id="actions">
+  <a href="../curso/index.html">← Curso</a>
+  <span class="t">De lunes a martes · el corto</span>
+  <span class="sp"></span>
+  <a href="de-lunes-a-martes-web.mp4" download>⬇ Video</a>
+  <a class="main" href="../curso/modulo-0/index.html">Empezar el Módulo 0 →</a>
+</nav>
+<div id="stage">
+  <canvas id="film" width="1920" height="1080"></canvas>
+  <div id="start"><span>▶ Reproducir la historia</span></div>
+</div>
+<div id="controls">
+  <button id="play" title="Reproducir / pausa (espacio)">▶</button>
+  <span id="time">0:00 / 0:00</span>
+  <div id="bar"><div class="track"></div><div class="fill"></div></div>
+  <span id="chapter"></span>
+  <button id="full" title="Pantalla completa (F)">⛶</button>
+</div>
+<script src="film.js"></script>
+</body>
+</html>

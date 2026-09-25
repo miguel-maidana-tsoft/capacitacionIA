@@ -10,7 +10,10 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:radial-gradient(900px 600px at 85% -10%,rgba(227,6,19,.14),transparent 60%),#07090D;color:#F5F6F8;font-family:Inter,"Segoe UI",system-ui,sans-serif;padding:56px 20px}
   .wrap{width:min(1100px,100%);margin:0 auto}
-  .brand{font-weight:900;letter-spacing:.12em}.brand span{color:#E30613}
+  .top{display:flex;justify-content:space-between;align-items:center;gap:16px}
+  .brand{font-weight:900;letter-spacing:.12em;color:#F5F6F8;text-decoration:none}.brand span{color:#E30613}
+  .home{color:#fff;text-decoration:none;font-weight:700;font-size:.9rem;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:9px 16px}
+  .home:hover{border-color:#E30613}
   .kick{margin-top:40px;font-size:.8rem;letter-spacing:.22em;color:#FF4A55;font-weight:800}
   h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin:10px 0 14px}
   .lead{color:#9AA1AD;max-width:48em;font-size:1.1rem;line-height:1.6}
@@ -36,7 +39,7 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="brand"><span>T</span>SOFT · AI ADOPTION PROGRAM 2026</div>
+  <header class="top"><a class="brand" href="../index.html"><span>T</span>SOFT · AI ADOPTION PROGRAM 2026</a><a class="home" href="../index.html">⌂ Inicio</a></header>
   <div class="kick">CURSO</div>
   <h1>Desarrollo potenciado por IA con Codex</h1>
   <p class="lead">Siete módulos para pasar de usar la IA como chat a trabajar con un ecosistema de agentes. Cada módulo tiene un video con ejemplos sobre <b>pagos-api</b>, el proyecto de Juli, su presentación y un challenge. Hacelos en orden: cada uno termina con algo que aplicás en tu propio proyecto.</p>

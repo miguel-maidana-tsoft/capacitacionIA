@@ -12,11 +12,13 @@ const { MsEdgeTTS, OUTPUT_FORMAT } = require('msedge-tts');
 const N = process.argv[2];
 const vi = process.argv.indexOf('--voz');
 const VOZ = vi > 0 ? process.argv[vi + 1] : 'es-AR-TomasNeural';
+// Para otros videos (p. ej. el corto): node narrar.cjs --video X.mp4 --cues narracion.json --out Y.mp4
+const opt = k => { const i = process.argv.indexOf('--' + k); return i > 0 ? path.resolve(process.argv[i + 1]) : null; };
 const DIR = path.join(__dirname, '..', `modulo-${N}`);
-const VIDEO = path.join(DIR, `modulo-${N}.mp4`);
+const VIDEO = opt('video') || path.join(DIR, `modulo-${N}.mp4`);
 // con la voz por defecto: modulo-N-con-voz.mp4; con otra voz: modulo-N-con-voz-<nombre>.mp4
-const OUT = path.join(DIR, vi > 0 ? `modulo-${N}-con-voz-${VOZ.split('-')[2].replace('Neural', '').toLowerCase()}.mp4` : `modulo-${N}-con-voz.mp4`);
-const { cues } = JSON.parse(fs.readFileSync(path.join(DIR, 'narracion.json'), 'utf8'));
+const OUT = opt('out') || path.join(DIR, vi > 0 ? `modulo-${N}-con-voz-${VOZ.split('-')[2].replace('Neural', '').toLowerCase()}.mp4` : `modulo-${N}-con-voz.mp4`);
+const { cues } = JSON.parse(fs.readFileSync(opt('cues') || path.join(DIR, 'narracion.json'), 'utf8'));
 const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'voz-'));
 
 // Cómo se tiene que leer lo que en pantalla está escrito para leer, no para decir
@@ -24,7 +26,7 @@ const PRONUNCIA = [
   [/AGENTS\.md/g, 'agents punto em de'], [/pagos-api/g, 'pagos A P I'], [/\bAPI\b/g, 'A P I'],
   [/console\.log/g, 'console punto log'], [/logger\.error/g, 'logger punto error'],
   [/payments\.refundAll\(\)/g, 'payments punto refund all'], [/refundAll/g, 'refund all'],
-  [/calcularRecargo/g, 'calcular recargo'], [/validateAmount\(\)/g, 'validate amount'],
+  [/calcularRecargo/g, 'calcular recargo'], [/TSOFT/g, 'T soft'], [/validateAmount\(\)/g, 'validate amount'],
   [/\bLLM\b/g, 'ele ele eme'], [/\bMCP\b/g, 'eme ce pe'], [/\bIA\b/g, 'I A'], [/—/g, ', '], [/…/g, '...']
 ];
 const decir = s => PRONUNCIA.reduce((a, [r, x]) => a.replace(r, x), s);

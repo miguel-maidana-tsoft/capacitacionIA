@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 1 · Del chat al agente · TSOFT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../motor/player.css">
+</head>
+<body class="con-acciones">
+<nav id="actions">
+  <a href="../../index.html">⌂ Inicio</a>
+  <a href="../index.html">← Curso</a>
+  <span class="t">Módulo 1 · Del chat al agente</span>
+  <span class="sp"></span>
+  <a href="modulo-1-web.mp4" download>⬇ Video</a>
+  <a href="modulo-1.pptx" download>⬇ Presentación</a>
+  <a class="main" href="quiz.html">Hacer el quiz →</a>
+</nav>
+<div id="stage">
+  <canvas id="film" width="1920" height="1080"></canvas>
+  <div id="start"><span>▶ Reproducir el módulo</span></div>
+</div>
+<div id="controls">
+  <button id="play" title="Reproducir / pausa (espacio)">▶</button>
+  <span id="time">0:00 / 0:00</span>
+  <div id="bar"><div class="track"></div><div class="fill"></div></div>
+  <span id="chapter"></span>
+  <button id="full" title="Pantalla completa (F)">⛶</button>
+</div>
+<script src="../motor/core.js"></script>
+<script src="preguntas.js"></script>
+<script src="escenas.js"></script>
+</body>
+</html>

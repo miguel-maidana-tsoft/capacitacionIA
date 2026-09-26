@@ -3,7 +3,7 @@ module.exports = {
   titulo: 'Cómo piensa la IA',
   bajada: 'Por qué la IA acierta un día y al otro no, y qué hacer al respecto.',
   slides: [
-    { tipo: 'portada', chip: '≈ 9 min · challenge al final',
+    { tipo: 'portada', chip: '≈ 8 min · challenge al final',
       notas: 'Bienvenida al curso. En este módulo vemos cómo funciona un modelo de lenguaje por dentro, para entender por qué a veces acierta y a veces no. El ejemplo que nos acompaña en todo el curso es pagos-api, el proyecto de Juli.' },
     { tipo: 'objetivos', items: [
       ['Un LLM predice', 'Por qué la IA no consulta ni recuerda: predice.'],

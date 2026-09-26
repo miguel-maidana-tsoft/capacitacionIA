@@ -1087,7 +1087,9 @@ const ready = (async () => {
     await document.fonts.ready;
   } catch (e) { /* sin red: fuentes del sistema */ }
 })();
-window.FILM = { duration: DUR, fps: FPS, renderAt, ready, scenes: S.map(s => ({ label: s.label, start: s.start * SLOW })) };
+window.FILM = { duration: DUR, fps: FPS, renderAt, ready, scenes: S.map(s => ({ label: s.label, start: s.start * SLOW })),
+  // textos de los subtítulos en tiempo real del video (para agregar voz)
+  cues: () => S.flatMap(s => (s.cap || []).map(([a, b, x]) => ({ t: (s.start + a) * SLOW, end: (s.start + b) * SLOW, text: x }))).sort((p, q) => p.t - q.t) };
 
 if (!EXPORT) {
   const playBtn = document.getElementById('play'), timeEl = document.getElementById('time'), bar = document.getElementById('bar'),
@@ -1105,9 +1107,29 @@ if (!EXPORT) {
     timeEl.textContent = `${fmt(t)} / ${fmt(DUR)}`;
     const cur = S.filter(s => t >= s.start * SLOW).pop(); chap.textContent = cur ? cur.label : '';
   }
+
+  // Música de fondo: la misma pista del MP4, sincronizada con la línea de tiempo del reproductor
+  const MUSICA_SRC = ((VER === '3') ? 'musica-v3.m4a' : null);
+  const musica = MUSICA_SRC ? new Audio(MUSICA_SRC) : null;
+  let silencio = false; window.__musica = musica; // diagnóstico
+  if (musica) {
+    musica.preload = 'auto';
+    const mb = document.createElement('button'); mb.id = 'mute'; mb.title = 'Música on/off (M)'; mb.textContent = '🔊';
+    const toggle = () => { silencio = !silencio; musica.muted = silencio; mb.textContent = silencio ? '🔇' : '🔊'; };
+    mb.addEventListener('click', toggle);
+    addEventListener('keydown', e => { if (e.key === 'm' || e.key === 'M') toggle(); });
+    document.getElementById('full').before(mb);
+  }
+  function syncMusica() {
+    if (!musica) return;
+    if (!playing) { if (!musica.paused) musica.pause(); return; }
+    if (Math.abs(musica.currentTime - t) > .25) { try { musica.currentTime = t; } catch (e) {} }
+    if (musica.paused) musica.play().catch(() => {});
+  }
   function loop(now) {
     requestAnimationFrame(loop);
     if (playing) { t += (now - last) / 1000; last = now; if (t >= DUR) { t = DUR - .001; playing = false; playBtn.textContent = '↺'; } }
+    syncMusica();
     renderAt(poster ? Math.min(POSTER, DUR - .01) : t); ui();
   }
   ready.then(() => requestAnimationFrame(loop));

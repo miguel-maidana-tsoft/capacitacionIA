@@ -15,3 +15,10 @@ curso/*/narracion.json
 ESTADO.md
 curso/PLAN-PUBLICACION.md
 curso/INVESTIGACION-PORTAL.md
+curso/CODEX-VERIFICADO.md
+
+# Audio fuente y archivos de trabajo de la narración (no se publican)
+*.mp3
+video/narracion*.json
+video/*.srt
+video/doblar_video.py

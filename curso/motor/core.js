@@ -363,9 +363,9 @@ G.portada = (m) => ({
   }
 });
 // "En este módulo vas a…"
-G.objetivos = (items, extra) => ({
+G.objetivos = (items, extra, intro) => ({
   label: 'Objetivos', dur: 15, section: 'Objetivos',
-  cap: [[.6, 6, 'En este módulo vas a entender cuatro ideas que usás todos los días, aunque no las veas.'], [6.5, 14.4, extra || 'Al final hay un challenge para que compruebes lo que aprendiste.']],
+  cap: [[.6, 6, intro || 'En este módulo vas a entender cuatro ideas que usás todos los días, aunque no las veas.'], [6.5, 14.4, extra || 'Al final hay un challenge para que compruebes lo que aprendiste.']],
   draw(t) {
     T('En este módulo vas a…', 160, 230, { s: 64, w: 900, a: seg(t, .2, .9) });
     items.forEach(([ic, tit, txt], i) => {
@@ -479,8 +479,8 @@ G.cierre = (m) => ({
    MOTOR
    ========================================================= */
 const O = .8;
-// RITMO: cuánto más lento se reproduce el guion (1.35 = ritmo de lectura cómodo; ?ritmo=1 = original)
-let S = [], META = {}, DUR_IN = 0, DUR = 0, CLEAN = false, RITMO = 1.35;
+// RITMO: cuánto más lento se reproduce el guion (1.2 = ritmo aprobado por Miguel; ?ritmo=1 = original)
+let S = [], META = {}, DUR_IN = 0, DUR = 0, CLEAN = false, RITMO = 1.2;
 
 function background(t) {
   c = main; GA = 1; ga(1);
@@ -574,7 +574,7 @@ function run(scenes, meta) {
   S = scenes; META = meta;
   let acc = 0;
   S.forEach(s => { s.start = acc; acc += s.dur - O; });
-  RITMO = +(QS.get('ritmo') || meta.ritmo || 1.35);
+  RITMO = +(QS.get('ritmo') || meta.ritmo || 1.2);
   DUR_IN = S[S.length - 1].start + S[S.length - 1].dur;
   DUR = DUR_IN * RITMO;
   // la duración que muestra la portada se calcula sola
@@ -612,9 +612,29 @@ function run(scenes, meta) {
     timeEl.textContent = `${fmt(t)} / ${fmt(DUR)}`;
     const cur = S.filter(s => t >= s.start * RITMO).pop(); chap.textContent = cur ? cur.label : '';
   }
+
+  // Música de fondo: la misma pista del MP4, sincronizada con la línea de tiempo del reproductor
+  const MUSICA_SRC = ((RITMO === (META.ritmo || 1.2) && META.musica !== false) ? (META.musica || 'musica.m4a') : null);
+  const musica = MUSICA_SRC ? new Audio(MUSICA_SRC) : null;
+  let silencio = false; window.__musica = musica; // diagnóstico
+  if (musica) {
+    musica.preload = 'auto';
+    const mb = document.createElement('button'); mb.id = 'mute'; mb.title = 'Música on/off (M)'; mb.textContent = '🔊';
+    const toggle = () => { silencio = !silencio; musica.muted = silencio; mb.textContent = silencio ? '🔇' : '🔊'; };
+    mb.addEventListener('click', toggle);
+    addEventListener('keydown', e => { if (e.key === 'm' || e.key === 'M') toggle(); });
+    document.getElementById('full').before(mb);
+  }
+  function syncMusica() {
+    if (!musica) return;
+    if (!playing) { if (!musica.paused) musica.pause(); return; }
+    if (Math.abs(musica.currentTime - t) > .25) { try { musica.currentTime = t; } catch (e) {} }
+    if (musica.paused) musica.play().catch(() => {});
+  }
   function loop(now) {
     requestAnimationFrame(loop);
     if (playing) { t += (now - last) / 1000; last = now; if (t >= DUR) { t = DUR - .001; playing = false; playBtn.textContent = '↺'; } }
+    syncMusica();
     renderAt(poster ? Math.min(POSTER, DUR - .01) : t); ui();
   }
   ready.then(() => requestAnimationFrame(loop));

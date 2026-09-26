@@ -70,7 +70,9 @@ await send('Page.navigate', { url: pathToFileURL(path.join(DIR, 'index.html')).h
 for (let i = 0; i < 80; i++) { if (await evaluate('!!window.FILM').catch(() => false)) break; await sleep(250); }
 await evaluate('FILM.ready.then(() => true)');
 const duration = await evaluate('FILM.duration');
-const grab = (t, fmt = 'jpeg') => evaluate(`(FILM.renderAt(${t}), document.getElementById('film').toDataURL('image/${fmt}', .93).split(',')[1])`);
+// si Chrome se traba (p. ej. la PC entra en reposo), cortar con error en vez de colgarse
+const conTope = (p, ms, msg) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error(msg)), ms))]);
+const grab = (t, fmt = 'jpeg') => conTope(evaluate(`(FILM.renderAt(${t}), document.getElementById('film').toDataURL('image/${fmt}', .93).split(',')[1])`), 60000, `Chrome no respondió al renderizar t=${t}. Volvé a correr el export.`);
 const done = () => { cleanup(); process.exit(0); };
 
 if (args.info) {

@@ -69,6 +69,13 @@ await evaluate('FILM.ready.then(() => true)');
 const duration = await evaluate('FILM.duration');
 const grab = t => evaluate(`(FILM.renderAt(${t}), document.getElementById('film').toDataURL('image/${args.stills ? 'png' : 'jpeg'}', .93).split(',')[1])`);
 
+if (args.cues) {
+  const cues = await evaluate('FILM.cues()');
+  const f = path.join(here, `narracion${VER ? '-v' + VER : ''}.json`);
+  fs.writeFileSync(f, JSON.stringify({ duracion: duration, cues }, null, 1));
+  console.log(`${cues.length} textos → ${f}`);
+  cleanup(); process.exit(0);
+}
 if (args.stills) {
   const dir = path.resolve(here, args.dir || 'stills'); fs.mkdirSync(dir, { recursive: true });
   for (const s of String(args.stills).split(',')) {

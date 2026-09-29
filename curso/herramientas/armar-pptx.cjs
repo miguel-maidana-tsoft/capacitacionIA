@@ -100,7 +100,7 @@ const T = {
   },
   pasos(d) {
     const s = base(d.section);
-    title(s, d.titulo);
+    title(s, d.titulo, d.chip ? { w: 6.2, size: d.titulo.length > 26 ? 24 : 32 } : {});
     if (d.chip) { panel(s, 6.9, .68, 2.6, .36, { r: .18, fill: '2A2008', line: K.amber }); text(s, d.chip, 6.9, .68, 2.6, .36, { size: 11, bold: true, color: K.amber, align: 'center', valign: 'middle' }); }
     d.pasos.forEach(([t, desc], i) => {
       const x = .5 + i * 3.07;
